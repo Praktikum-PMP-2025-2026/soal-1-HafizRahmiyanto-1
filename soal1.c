@@ -1,68 +1,71 @@
 #include <stdio.h>
-
-int main(void) {
-    #include <stdio.h>
 #include <string.h>
+//kak ini saya coba test case 1 setengah jam setelah praktikum, hanya mencoba test case
+
 
 int main(){
-    char line[50];
-    int panjang = strlen(line);
-    int found = 1;
-    char temp;
+    int found =1;
     int index=0;
+    char line[50];
+    char temp;
     int i=0;
-    int deb=0;
     scanf("%s", line);
-    while(found == 1 && deb<13){
-        printf("**\n");
-        for(int index; index<panjang; index++){
+    int panjang = strlen(line);
+    while(found>0){
+        found=0;
+        for(index; index<panjang; index++){
             temp = line[index];
-            if(line[index]== '(' || line[index]== ')'){
-                found =1;
-                i=index;
+            if(temp == '(' || temp == ')'){
+                i = index;
+                found++;
                 break;
             }
-            else{
-                found = 0;
+        }
+        if(found>0){
+            if(temp == ')'){
+                line[i]='2';
+                i=0;
+                index=0;
             }
-        }
-        
-        if(temp== ')' && temp !='('){
-            printf("yes masuk sini!\n");
-            line[i]= '2';
-            index = 0;
-        }
-        
-        // a)a(i())(dfd( => a2a(i())(dfd( => a2a(i01)(dfd( => a-1a0i011(dfd( => a-1a0i011(dfd-1 => a-1a0i011-1dfd-1
-        else if(temp=='(' && temp !=')'){
-            int tempIndex = i;
-            printf("tempIndex = %d\n", tempIndex);
-            for(int j=tempIndex; j< panjang-tempIndex+3; j++){
-                printf("temp = %c\n", temp);
-                if(line[j]=='('){
-                    if(j!=panjang-1){
-                        index = j;
+            
+            else if(temp == '('){
+                int tempIndex = i;
+                for(int j=tempIndex; j<panjang; j++){
+                    if(line[j]=='('){
+                        if(j!=panjang-1){
+                            int count =0;
+                            for(int n=j; n<panjang; n++){
+                                if(line[n] == ')'){
+                                    count=1;
+                                    break;
+                                }
+                            }
+                            if(count > 0){
+                                i = j;
+                            }
+                            else{
+                                line[j] ='2';
+                            }
+                        }
+                        else{
+                            line[j]='2';
+                            index= 0;
+                            i=0;
+                            break;
+                        }
                     }
-                    else{
-                        line[j]='2';
-                        index= 0;
-                        printf("temp = %c\n", temp);
+                    else if(line[j]==')'){
+                        line[j]='1';
+                        line[i]= '0';
+                        i=0;
+                        index =0;
                         break;
                     }
                 }
-                else if(line[j]==')'){
-                    line[j]='1';
-                    line[i]= '0';
-                    index =0;
-                    printf("temp = %c\n", temp);
-                    break;
-                }
             }
         }
-        deb++;
     }
 
-    printf("%d", strlen(line));
     for(int k =0; k<panjang; k++){
         if(line[k]=='0'){
             printf("(");
@@ -78,7 +81,3 @@ int main(){
     return 0;
 }
 
-
-//aa(i())dfd
-    return 0;
-}
